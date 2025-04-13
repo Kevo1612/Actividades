@@ -1,5 +1,6 @@
 package com.mycompany.actividades.Actividad_S5;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Exp2_S5_Kevin_Carrasco {
@@ -9,21 +10,37 @@ public class Exp2_S5_Kevin_Carrasco {
         int ubicacion;
         boolean esEstudiante = true;
         boolean esTerceraEdad = true;
+        ArrayList<Entrada> entradas = new ArrayList<>();
         for (;;){
             System.out.println("Bienvenido");
             System.out.println("Seleccione la ubicacion de su entrada");
             System.out.println("1. Vip");
             System.out.println("2. Platea");
-            System.out.println("3. Palco");
+            System.out.println("3. General");
             opcion = scan.nextInt();
-            if (opcion >= 1 && opcion <=3){
-                System.out.println("Eres estudiante?");
-                opcion = scan.nextInt();                
-            } else{
-                System.out.println("Opcion invalida, volviendo al inicio"); 
-                break;
-            } 
-        }        
+            switch (opcion){
+                case 1:
+                    Contador.registrarEntradas();
+                    System.out.println("Elegiste ubicacion en Vip");                    
+                    entradas.add(new Entrada("Vip",30000));
+                    break;
+                case 2:
+                    Contador.registrarEntradas();
+                    System.out.println("Elegiste ubicacion en Platea");
+                    entradas.add(new Entrada("Platea",20000));
+                    break;
+                case 3:
+                    Contador.registrarEntradas();
+                    System.out.println("Elegiste ubicacion en General");
+                    entradas.add(new Entrada("General",10000));
+                    break;                
+                default:
+                    System.out.println("Ubicacion invalida, reinicie");
+            }
+                break;             
+        }
+        System.out.printf("Total de Entradas: %d\n", Contador.getCantidadEntradas());
+        scan.close();        
     }    
 }
 class Entrada {
@@ -38,5 +55,26 @@ class Entrada {
     }
     public void setPrecioEntrada(double precioEntrada){
         this.precioEntrada = precioEntrada;
+    }
+}
+class Contador {
+    static int cantidadEntradas = 0;
+    public static void registrarEntradas(){
+        cantidadEntradas++;
+    }
+    public static int getCantidadEntradas(){
+        return cantidadEntradas;
+    }
+}
+class DetalleDeEntrada{
+    String ubicacion;
+    int precio;
+    int numeroEntrada;
+    public DetalleDeEntrada(String ubicacion, int precio, int numeroEntrada){
+        this.ubicacion = ubicacion;
+        this.precio = precio;
+        this.numeroEntrada = numeroEntrada;                
+    }
+    public void mostrarInfoEntrada(){
     }
 }

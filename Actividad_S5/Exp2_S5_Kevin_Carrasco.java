@@ -5,18 +5,27 @@ import java.util.Scanner;
 
 public class Exp2_S5_Kevin_Carrasco{
     public static void buscarEntradaPorNumero(int numero, ArrayList<Entrada> inputEntrada){
+        boolean encontrada = false;
         for(int i = 0; i < inputEntrada.size();i++){
             if(inputEntrada.get(i).numero == numero){
-                System.out.printf("Su entrada es la: %d\n", inputEntrada.get(i).numero);
-                System.out.printf("Su entrada esta en sector: %s\n", inputEntrada.get(i).ubicacion);
-                System.out.printf("Su entrada esta en sector: %d\n", inputEntrada.get(i).precio);
+                inputEntrada.get(i).mostrarInfo();
+                encontrada = true;
             }
+        }
+        if(encontrada == false){
+            System.out.println("No se encontro la entrada");
+        }        
+    }
+    public static void imprimirEntradas(ArrayList<Entrada> inputEntrada){
+        for(int i = 0; i < inputEntrada.size();i++){          
+            inputEntrada.get(i).mostrarInfo();
         }
     }
     public static void main (String[] args){
         Scanner scan = new Scanner (System.in);
         int opcion = 0;
         int ubicacion = 0;
+        double total = 0.0;
         ArrayList<Entrada> entrada = new ArrayList<>();
         boolean continuarCiclo = true;
         //Menu para comprar entrada
@@ -28,6 +37,7 @@ public class Exp2_S5_Kevin_Carrasco{
             //Seleccion de ubicacion
             if (opcion==1){
                 System.out.println("//Bienvenido//");
+                System.out.println("//Por cada 3 entradas tiene 10% de descuento//");
                 System.out.println("Seleccione la ubicacion de su entrada");
                 System.out.println("1. Vip");
                 System.out.println("2. Platea");
@@ -73,7 +83,7 @@ public class Exp2_S5_Kevin_Carrasco{
                 System.exit(1);
             }                 
         }
-        //Asignacion del descuento por categoria de cliente
+        //Asignacion de descuento por categoria de cliente
         System.out.println("¿Eres EStudiante o Tercera edad?");
         System.out.println("1.-Estudiante");
         System.out.println("2.-Tercera Edad");
@@ -90,21 +100,48 @@ public class Exp2_S5_Kevin_Carrasco{
             System.out.println("Opcion Invalida");
             System.exit(1);
         }
+        //miEntrada.mostrarInfo();;
         //Asignacion de descuento por promocion
         //Cada 3 entradas se aplica 10% de descuento
         //Y solo se aplica el descuento mayor
-        int descuentoPromocion;
-        descuentoPromocion = 1 - ((Contador.getCantidadEntradas() / 3) / 10);
-        if(Contador.getDescuento() < descuentoPromocion){
-            Contador.asignarDescuento(descuentoPromocion);
+        double descuentoPromocion = 0.0;
+        if(Contador.getCantidadEntradas() >= 3){            
+            descuentoPromocion = 1.0 - ((int)(Contador.getCantidadEntradas() / 3.0) / 10.0);
+            if(Contador.getDescuento() > descuentoPromocion){
+                Contador.asignarDescuento(descuentoPromocion);
+            }
         }
-        //Eliminacion de ultima entrada
-        //entrada.remove(scan.nextInt() - 1);
-        System.out.printf("Total de Entradas: %d\n", Contador.getCantidadEntradas());
-        System.out.println("Ingrese numero de entrada que busca");
-        buscarEntradaPorNumero(scan.nextInt(), entrada);
-        scan.close();        
-    }   
+        
+        total = Contador.getTotalIngresos() * Contador.getDescuento();        
+        System.out.printf("Total a pagar con descuento: $%.0f\n", total);
+        //Menu de busqueda y eliminacion        
+        continuarCiclo = true;
+        while(continuarCiclo){
+            System.out.println("//Menu de busqueda y eliminacion de entrada//");
+            System.out.println("1.-Buscar entrada");
+            System.out.println("2.-Eliminar entrada");
+            System.out.println("3.-Imprimir todas las entradas");
+            System.out.println("4.-Finalizar");
+            opcion = scan.nextInt();
+            if(opcion == 1){
+                System.out.println("Ingrese numero de entrada que busca");
+            buscarEntradaPorNumero(scan.nextInt(), entrada);
+            } else if (opcion == 2){
+                //Eliminacion de entrada
+                System.out.println("Ingrese el numero de entrada que quiere eliminar");
+                entrada.remove(scan.nextInt() - 1);
+            } else if(opcion == 3){
+                imprimirEntradas(entrada);
+            } else if(opcion == 4){
+                continuarCiclo = false;
+                System.out.println("Programa finalizado");
+            } else{
+                System.out.println("Opcion invalida, cerrando programa");
+                System.exit(1);
+            }                                    
+        }
+        System.out.printf("Total de Entradas: %d\n", entrada.size());        
+    }        
 }
 class Contador {
     static int cantidadEntradas = 0;
@@ -124,6 +161,9 @@ class Contador {
     }
     public static double getDescuento(){
         return descuento;
+    }
+    public static double getTotalIngresos(){
+        return totalIngresos;
     }
 }
 class Entrada{
@@ -148,8 +188,8 @@ class Entrada{
         return this.precio;
     }
     public void mostrarInfo(){
-        System.out.printf("Ubicacion de la entrada: ", this.ubicacion);
-        System.out.printf("Precio de la entrada: ", this.precio);
-        System.out.printf("Numero de la entrada: ", this.numero);
+        System.out.printf("Ubicacion de la entrada: %s\n", this.ubicacion);
+        System.out.printf("Precio de la entrada: %.2f\n", this.precio);
+        System.out.printf("Numero de la entrada: %d\n", this.numero);
     }
 }

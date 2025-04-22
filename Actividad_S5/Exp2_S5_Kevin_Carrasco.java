@@ -191,5 +191,6 @@ class Entrada{
         System.out.printf("Ubicacion de la entrada: %s\n", this.ubicacion);
         System.out.printf("Precio de la entrada: %.2f\n", this.precio);
         System.out.printf("Numero de la entrada: %d\n", this.numero);
+        
     }
 }

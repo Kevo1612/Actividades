@@ -59,3 +59,49 @@ class Cliente {
         }
     }
 }
+
+// Clase para representar un Asiento en el teatro
+class Asiento {
+    private String ubicacion; // "VIP", "Palco", "PlateaBaja", "PlateaAlta", "Galeria"
+    private int fila;
+    private int numero;
+    private boolean ocupado;
+    private double precioBase;
+    
+    public Asiento(String ubicacion, int fila, int numero, double precioBase) {
+        this.ubicacion = ubicacion;
+        this.fila = fila;
+        this.numero = numero;
+        this.ocupado = false;
+        this.precioBase = precioBase;
+    }
+    
+    public String getUbicacion() {
+        return ubicacion;
+    }
+    
+    public int getFila() {
+        return fila;
+    }
+    
+    public int getNumero() {
+        return numero;
+    }
+    
+    public boolean isOcupado() {
+        return ocupado;
+    }
+    
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
+    }
+    
+    public double getPrecioBase() {
+        return precioBase;
+    }
+    
+    @Override
+    public String toString() {
+        return "Asiento " + fila + "-" + numero + " (" + ubicacion + ")";
+    }
+}

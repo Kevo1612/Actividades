@@ -105,3 +105,63 @@ class Asiento {
         return "Asiento " + fila + "-" + numero + " (" + ubicacion + ")";
     }
 }
+
+// Clase para representar una Entrada
+class Entrada {
+    private Cliente cliente;
+    private Asiento asiento;
+    private double precioFinal;
+    private String fechaFuncion;
+    private String horaFuncion;
+    private String idEntrada;
+    private static int contadorEntradas = 1000;
+    
+    public Entrada(Cliente cliente, Asiento asiento, String fechaFuncion, String horaFuncion) {
+        this.cliente = cliente;
+        this.asiento = asiento;
+        this.fechaFuncion = fechaFuncion;
+        this.horaFuncion = horaFuncion;
+        this.idEntrada = "TM-" + contadorEntradas++;
+        
+        // Calcular precio final aplicando descuento
+        this.precioFinal = asiento.getPrecioBase() * (1 - cliente.getDescuento());
+    }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public Asiento getAsiento() {
+        return asiento;
+    }
+    
+    public double getPrecioFinal() {
+        return precioFinal;
+    }
+    
+    public String getFechaFuncion() {
+        return fechaFuncion;
+    }
+    
+    public String getHoraFuncion() {
+        return horaFuncion;
+    }
+    
+    public String getIdEntrada() {
+        return idEntrada;
+    }
+    
+    public void imprimirBoleta() {
+        System.out.println("\n===== TEATRO MORO - BOLETA =====");
+        System.out.println("ID Entrada: " + idEntrada);
+        System.out.println("Fecha: " + fechaFuncion + " - Hora: " + horaFuncion);
+        System.out.println("Cliente: " + cliente.getNombre());
+        System.out.println("Tipo de cliente: " + cliente.getTipoCliente());
+        System.out.println("Ubicación: " + asiento.getUbicacion());
+        System.out.println("Asiento: Fila " + asiento.getFila() + ", Número " + asiento.getNumero());
+        System.out.println("Precio base: $" + asiento.getPrecioBase());
+        System.out.println("Descuento aplicado: " + (cliente.getDescuento() * 100) + "%");
+        System.out.println("Precio final: $" + precioFinal);
+        System.out.println("==============================");
+    }
+}

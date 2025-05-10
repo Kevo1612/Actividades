@@ -5,61 +5,83 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Exp3_S9_Kevin_Carrasco {
-    
+    // Clase principal para ejecutar el sistema
+    public static void main(String[] args) {
+        System.out.println("Bienvenido al Sistema de Venta de Entradas del Teatro Moro");
+        
+        // Crear teatro con 20 filas y 10 asientos por fila
+        Teatro teatroMoro = new Teatro("Teatro Moro", 20, 10);
+        
+        // Iniciar sistema de venta
+        SistemaVenta sistema = new SistemaVenta(teatroMoro);
+        sistema.iniciar();
+    }
 }
 
 // Clase para representar a un Cliente
 class Cliente {
     private String nombre;
     private int edad;
-    private String tipoCliente; // "Normal", "Niño", "Mujer", "Estudiante", "TerceraEdad"
+    private String tipoCliente; // El tipo con mayor descuento
     private boolean esEstudiante;
     private boolean esMujer;
-    
+
     public Cliente(String nombre, int edad, boolean esMujer, boolean esEstudiante) {
         this.nombre = nombre;
         this.edad = edad;
         this.esMujer = esMujer;
         this.esEstudiante = esEstudiante;
-        
-        // Determinar tipo de cliente para aplicar descuento
-        if (edad < 12) {
-            this.tipoCliente = "Niño";
-        } else if (edad >= 65) {
-            this.tipoCliente = "TerceraEdad";
-        } else if (esEstudiante) {
-            this.tipoCliente = "Estudiante";
-        } else if (esMujer) {
-            this.tipoCliente = "Mujer";
-        } else {
-            this.tipoCliente = "Normal";
+
+        // Calcular todos los descuentos posibles y elegir el mayor
+        double descuentoNino = (edad < 12) ? 0.10 : 0.0;
+        double descuentoTerceraEdad = (edad >= 65) ? 0.25 : 0.0;
+        double descuentoEstudiante = esEstudiante ? 0.15 : 0.0;
+        double descuentoMujer = esMujer ? 0.20 : 0.0;
+
+        double maxDescuento = descuentoNino;
+        String mejorTipo = "Niño";
+        if (descuentoTerceraEdad > maxDescuento) {
+            maxDescuento = descuentoTerceraEdad;
+            mejorTipo = "TerceraEdad";
         }
+        if (descuentoEstudiante > maxDescuento) {
+            maxDescuento = descuentoEstudiante;
+            mejorTipo = "Estudiante";
+        }
+        if (descuentoMujer > maxDescuento) {
+            maxDescuento = descuentoMujer;
+            mejorTipo = "Mujer";
+        }
+        if (maxDescuento == 0.0) {
+            mejorTipo = "Normal";
+        }
+        this.tipoCliente = mejorTipo;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public int getEdad() {
         return edad;
     }
-    
+
     public String getTipoCliente() {
         return tipoCliente;
     }
-    
+
     public double getDescuento() {
         switch (tipoCliente) {
             case "Niño":
-                return 0.10; // 10% de descuento
+                return 0.10;
             case "Mujer":
-                return 0.20; // 20% de descuento
+                return 0.20;
             case "Estudiante":
-                return 0.15; // 15% de descuento
+                return 0.15;
             case "TerceraEdad":
-                return 0.25; // 25% de descuento
+                return 0.25;
             default:
-                return 0.0; // Sin descuento
+                return 0.0;
         }
     }
 }
